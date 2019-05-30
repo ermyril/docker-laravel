@@ -1,0 +1,41 @@
+FROM php:7.2.16-fpm
+RUN apt-get update -y && apt-get install -y \
+                openssl \
+                zip \
+                unzip \
+                git \
+                libjpeg62-turbo-dev \
+                libfreetype6-dev \
+                libpng-dev \
+                locales \
+        && docker-php-ext-install -j$(nproc) iconv \
+        && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+        && docker-php-ext-install -j$(nproc) gd
+
+RUN docker-php-ext-install pdo pdo_mysql mbstring zip
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
+# https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-ubuntu-docker-container
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8     
+
+
+COPY app-entrypoint.sh /app-entrypoint.sh
+WORKDIR /app
+COPY . /app
+#RUN composer install
+
+#ENTRYPOINT [ "/app-entrypoint.sh" ]
+CMD composer install ; php artisan serve --host=0.0.0.0 --port=8000
+EXPOSE 8000
+
+
+
+
+
