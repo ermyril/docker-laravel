@@ -57,14 +57,14 @@ setup_db() {
 if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
 
   # if app doesn't exist - install fresh copy of laravel framework
-  if [ ! app_present ]; then
+  if  ! app_present ; then
     echo "Creating laravel application"
     install_laravel
   fi
 
 
   echo "Installing/Updating Laravel dependencies (composer)"
-  if [ ! vendor_present ]; then
+  if  ! vendor_present ; then
     composer install
     echo "Dependencies installed"
   else
