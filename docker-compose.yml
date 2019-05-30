@@ -3,7 +3,7 @@ services:
   app:
     build: ./docker/
     ports: 
-      - "8001:8000"
+      - "8000:8000"
     volumes:
       - .:/app
    #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
@@ -29,4 +29,4 @@ services:
     volumes:
       - ./docker/data/:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
