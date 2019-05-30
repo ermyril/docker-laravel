@@ -2,7 +2,8 @@ version: '2'
 services:
   app:
     build: ./docker/
-    ports: - "8001:8000"
+    ports: 
+      - "8001:8000"
     volumes:
       - .:/app
    #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
