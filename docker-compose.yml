@@ -2,19 +2,18 @@ version: '2'
 services:
   app:
     build: ./docker/
-    ports:
-      - "8001:8000"
+    ports: - "8001:8000"
     volumes:
       - .:/app
-      - ./docker/app-entrypoint.sh:/app-entrypoint.sh
+   #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
+   #  - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
     environment:
-      - DB_HOST=db
+      - DB_HOST=${gete}
       - DB_USERNAME=user
       - DB_DATABASE=database
       - DB_PASSWORD=password
    #env_file: .env
    #working_dir: /app
-   #command: bash -c 'php artisan migrate && php artisan serve --host 0.0.0.0'
     depends_on:
       - db
     links:
