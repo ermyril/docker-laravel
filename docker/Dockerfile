@@ -55,6 +55,11 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
 
+# Configs
+
+COPY ./config/php/php.ini /usr/local/etc/php/php.ini
+
+
 
 COPY app-entrypoint.sh /app-entrypoint.sh
 
