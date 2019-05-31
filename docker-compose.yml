@@ -2,18 +2,18 @@ version: '2'
 services:
   app:
     build: ./docker/
-    ports: 
+    ports:
       - "8000:8000"
     volumes:
       - .:/app
-   #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
+      - ./docker/app-entrypoint.sh:/app-entrypoint.sh
    #  - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
     environment:
-      - DB_HOST=${gete}
+      - DB_HOST=db
       - DB_USERNAME=user
       - DB_DATABASE=database
       - DB_PASSWORD=password
-   #env_file: .env
+    env_file: .env
    #working_dir: /app
     depends_on:
       - db

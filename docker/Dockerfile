@@ -1,5 +1,14 @@
 FROM php:7.2-fpm-alpine
 
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+#RUN addgroup -S alpine && adduser -S -G alpine alpine
+
+#ARG uid=1000
+#ARG gid=1000
+
+#RUN addgroup -g $gid -S alpine
+#RUN adduser  -u $uid -S alpine -G alpine
+
 RUN apk update
 
 # Basic packages - php and all the nessessary stuff
@@ -23,17 +32,24 @@ RUN set -ex && \
    #
 
 
-RUN apk add --no-cache tini # tiny init for containers
+#RUN apk add --no-cache tini # tiny init for containers
 # RUN apk add --no-cache busybox-suid # fixing su in busybox - well, we don't really need it, right?
 
+RUN apk add --no-cache \
+# grab su-exec for easy step-down from root
+	    'su-exec>=0.2' \
+# tiny init for containers
+	    tini
 
 # project dependencies
 RUN apk add --no-cache aspell aspell-en
 
 
 
+## INSTALL COMPOSER
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 ## CONFIGURING LOCALES
 # https://gist.github.com/Herz3h/0ffc2198cb63949a20ef61c1d2086cc0
@@ -55,6 +71,8 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
 
+
+
 # Configs
 
 COPY ./config/php/php.ini /usr/local/etc/php/php.ini
@@ -63,16 +81,18 @@ COPY ./config/php/php.ini /usr/local/etc/php/php.ini
 
 COPY app-entrypoint.sh /app-entrypoint.sh
 
-RUN addgroup -g 1000 -S alpine
-RUN adduser  -u 1000 -S alpine -G alpine
+#RUN addgroup -g 1000 -S alpine
+#RUN adduser  -u 1000 -S alpine -G alpine
 
-RUN mkdir /app && chown alpine:alpine /app
+RUN mkdir /app
+#RUN chown alpine:alpine /app
 WORKDIR /app
 
-USER alpine
+#USER alpine
 
 #COPY . /app
 #RUN composer install
+
 
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]

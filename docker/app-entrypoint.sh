@@ -1,4 +1,5 @@
-#!/bin/sh -e
+#!/bin/sh
+set -e
 
 INIT_SEM=/tmp/initialized.sem
 
@@ -20,7 +21,7 @@ install_laravel() {
 
    rm -rfv /tmp/laravel # just in case there is some files left
 
-   composer create-project --prefer-dist laravel/laravel /tmp/laravel
+   su-exec alpine:alpine composer create-project --prefer-dist laravel/laravel /tmp/laravel
 
    # moving framework to our working directory
    for x in /tmp/laravel/* /tmp/laravel/.[!.]* /tmp/laravel/..?*; do
@@ -54,7 +55,40 @@ setup_db() {
 }
 
 
+create_user() {
+
+    if [[ -z "${UID}" ]]; then
+
+        GID=1000
+        UID=1000
+
+        echo "Using default GID - $GID"
+        echo "Using default UID - $UID"
+    fi
+
+    #user_exists=grep -c "^$UID:$GID:" /etc/passwd
+
+    if ! grep "$UID:$GID" /etc/passwd &>/dev/null; then
+
+        echo "user don't exist"
+
+        echo "Creating group with id $GID"
+        echo "Creating user with id $UID"
+
+        addgroup -g $GID -S alpine && \
+        adduser -u $UID -S alpine -G alpine
+
+        # fixing rights if user was changed, ignoring docker folder or we'll mess up our database
+        find /app/ -type d ! -path '/app/docker*' -exec chown $UID:$GID {} +
+        find /app/ -type f ! -path '/app/docker*' -exec chown $UID:$GID {} +
+    fi
+
+
+}
+
 if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
+
+  create_user
 
   # if app doesn't exist - install fresh copy of laravel framework
   if  ! app_present ; then
@@ -65,14 +99,14 @@ if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
 
   echo "Installing/Updating Laravel dependencies (composer)"
   if  ! vendor_present ; then
-    composer install
+    su-exec alpine:alpine composer install
     echo "Dependencies installed"
   else
-    composer update
+    su-exec alpine:alpine composer update
     echo "Dependencies updated"
   fi
 
-  wait_for_db
+   wait_for_db
 
 
    # this thing is actually a workaround for a problem with incompatibility of mysql and mariadb
