@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
 
+
 INIT_SEM=/tmp/initialized.sem
+
 
 
 fresh_container() {
@@ -23,7 +25,7 @@ install_laravel() {
 
    su-exec alpine:alpine composer create-project --prefer-dist laravel/laravel /tmp/laravel
 
-   # moving framework to our working directory
+   echo "moving framework files to our working directory"
    for x in /tmp/laravel/* /tmp/laravel/.[!.]* /tmp/laravel/..?*; do
        if [ -e "$x" ]; then mv -- "$x" /app/; fi
    done
@@ -76,7 +78,7 @@ create_user() {
         echo "Creating user with id $UID"
 
         addgroup -g $GID -S alpine && \
-        adduser -u $UID -S alpine -G alpine
+        adduser -u $UID -S alpine -G alpine --shell /bin/ash
 
         # fixing rights if user was changed, ignoring docker folder or we'll mess up our database
         find /app/ -type d ! -path '/app/docker*' -exec chown $UID:$GID {} +
@@ -129,4 +131,4 @@ if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
 fi
 
 
-exec tini -- "$@"
+exec su-exec alpine:alpine tini -- "$@"
