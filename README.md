@@ -67,7 +67,6 @@ $ sed -i 's/#env_file/ env_file/' docker-compose.yml
 ### ldht.sh - laravel docker helper tool
 It is a simple script with a few nice (in my opinion) helpers that make routine operations ( such as backing up/restoring ) easier.
 
-Usage is simple
 
 ```
 $ bash ldht.sh help
