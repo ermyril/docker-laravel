@@ -1,6 +1,7 @@
 #!/bin/sh
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# current script directory
+DIR=$(dirname "$(readlink -f "$0")")
 
 # get value of specific parameter from .env file
 getenv(){
@@ -14,17 +15,15 @@ getcontainerid(){
 }
 
 
-#echo $(getcontainerid db)
-
 
 ##mysqldump -u $(getenv db_username) \
 ##    -p$(getenv db_password) \
 ##    $(getenv db_database) \
 ##    -r $(getenv app_name)$(date +'_%d-%m-%Y.sql')
 
-  docker exec $(getcontainerid db) mysqldump -u $(getenv db_username) \
-      -p$(getenv db_password) \
-      $(getenv db_database) > $DIR/database/backups/$(getenv app_name)$(date +'_%d-%m-%Y.sql')
+# docker exec $(getcontainerid db) mysqldump -u $(getenv db_username) \
+#     -p$(getenv db_password) \
+#     $(getenv db_database) > $DIR/database/backups/$(getenv app_name)$(date +'_%d-%m-%Y.sql')
 
 ## get containerid for a current project
 # docker ps | grep $(echo $DIR | awk -F \/ '{print $NF}' | sed 's/\.//g')_db | awk '{print $1}'
