@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 COMMAND=$1
 
@@ -16,7 +16,8 @@ post-deploy - executes a bunch of commands in a container ( migrate, config:clea
 fi
 
 # current script directory
-DIR=$(dirname "$(readlink -f "$0")")
+#DIR=$(dirname "$(readlink -f "$0")") # it is not macos compliant ((
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ## get value of specific parameter from .env file
 getenv(){
