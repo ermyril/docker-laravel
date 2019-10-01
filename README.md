@@ -10,7 +10,7 @@ To get it up and running:
 
 ```
 $ mkdir ~/myapp && cd ~/myapp
-$ curl -LO https://raw.githubusercontent.com/shiasyn/docker-laravel/master/docker-compose.yml
+$ curl -LO https://raw.githubusercontent.com/ermyril/docker-laravel/master/docker-compose.yml
 $ docker-compose up
 ```
 
@@ -20,7 +20,7 @@ $ docker-compose up
 Clone this repo
 
 ```
-$ git clone https://github.com/shiasyn/docker-laravel && cd docker-laravel
+$ git clone https://github.com/ermyril/docker-laravel && cd docker-laravel
 ```
 
 Uncomment build parameter in docker-compose.yml file
