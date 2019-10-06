@@ -42,7 +42,6 @@ RUN apk add --no-cache \
 	    tini
 
 # project dependencies
-RUN apk add --no-cache aspell aspell-en
 
 
 
