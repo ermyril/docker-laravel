@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 #RUN addgroup -S alpine && adduser -S -G alpine alpine
@@ -18,6 +18,7 @@ RUN set -ex && \
     libxpm-dev \
     zlib-dev \
     openssl \
+    libzip-dev \
     zip \
     unzip \
     git  \
