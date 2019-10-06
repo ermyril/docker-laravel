@@ -2,7 +2,7 @@ version: '2'
 services:
   app:
     image: "shiasyn/docker-laravel:latest"
-   #build: ./docker/
+   #build: ./docker/php
     ports:
       - "8000:8000"
     volumes:
