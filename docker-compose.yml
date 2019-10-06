@@ -1,14 +1,14 @@
 version: '2'
 services:
   app:
-    image: "shiasyn/docker-laravel:latest"
-   #build: ./docker/php
+   #image: "shiasyn/docker-laravel:latest"
+    build: ./docker/php
     ports:
       - "8000:8000"
     volumes:
       - .:/app
+      - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
    #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
-   #  - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
     environment:
       - DB_HOST=db
       - DB_USERNAME=user
@@ -30,3 +30,12 @@ services:
       - ./docker/data/:/var/lib/mysql
     ports:
       - "3306:3306"
+  nginx:
+      build: ./docker/nginx
+      ports:
+        - "80:80"
+      volumes:
+        - .:/app
+        - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
+      links:
+        - app

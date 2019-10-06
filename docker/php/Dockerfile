@@ -75,7 +75,8 @@ ENV LANG=en_US.UTF-8 \
 
 # Configs
 
-COPY ./config/php/php.ini /usr/local/etc/php/php.ini
+COPY ./config/php.ini /usr/local/etc/php/php.ini
+COPY ./config/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 
 
@@ -95,8 +96,9 @@ WORKDIR /app
 
 
 ENTRYPOINT [ "/app-entrypoint.sh" ]
-CMD [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
-EXPOSE 8000
+#CMD [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
+CMD ["php-fpm"]
+EXPOSE 8000 9000
 
 
 
