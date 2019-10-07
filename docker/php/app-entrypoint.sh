@@ -88,9 +88,18 @@ create_user() {
 
 }
 
-if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
+create_pipe_for_stderr() {
+    # Allow `alpine` user to write to /dev/stderr
+    # https://github.com/moby/moby/issues/6880
+    mkfifo -m 600 /tmp/logpipe
+    chown alpine:alpine /tmp/logpipe
+    cat <> /tmp/logpipe 1>&2 &
+}
+
+if [ "${1}" == "php-fpm" -a "$2" == "" ]; then
 
   create_user
+  create_pipe_for_stderr
 
   # if app doesn't exist - install fresh copy of laravel framework
   if  ! app_present ; then
@@ -130,5 +139,7 @@ if [ "${1}" == "php" -a "$2" == "artisan" -a "$3" == "serve" ]; then
 
 fi
 
-
-exec su-exec alpine:alpine tini -- "$@"
+# idk if we're really need whole stepping down from root thingy anymore
+# as php-fpm does that for us
+#exec su-exec alpine:alpine tini -- "$@"
+exec tini -- "$@"

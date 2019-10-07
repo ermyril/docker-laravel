@@ -77,6 +77,7 @@ ENV LANG=en_US.UTF-8 \
 
 COPY ./config/php.ini /usr/local/etc/php/php.ini
 COPY ./config/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./config/docker.conf /usr/local/etc/php-fpm.d/docker.conf
 
 
 

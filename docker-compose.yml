@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
+   #  - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
    #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
     environment:
       - DB_HOST=db
@@ -36,6 +36,6 @@ services:
         - "80:80"
       volumes:
         - .:/app
-        - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
+    #   - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
       links:
         - app
