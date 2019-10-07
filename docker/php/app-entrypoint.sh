@@ -88,18 +88,20 @@ create_user() {
 
 }
 
-create_pipe_for_stderr() {
-    # Allow `alpine` user to write to /dev/stderr
-    # https://github.com/moby/moby/issues/6880
-    mkfifo -m 600 /tmp/logpipe
-    chown alpine:alpine /tmp/logpipe
-    cat <> /tmp/logpipe 1>&2 &
-}
+# not used as we're running php-fpm from root, natively stepped down to alpine
+# left for historical purposes, might actually come handy someday
+#   create_pipe_for_stderr() {
+#       # Allow `alpine` user to write to /dev/stderr
+#       # https://github.com/moby/moby/issues/6880
+#       mkfifo -m 600 /tmp/logpipe
+#       chown alpine:alpine /tmp/logpipe
+#       cat <> /tmp/logpipe 1>&2 &
+#   }
 
 if [ "${1}" == "php-fpm" -a "$2" == "" ]; then
 
   create_user
-  create_pipe_for_stderr
+ #create_pipe_for_stderr
 
   # if app doesn't exist - install fresh copy of laravel framework
   if  ! app_present ; then
