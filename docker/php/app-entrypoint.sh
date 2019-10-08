@@ -24,12 +24,16 @@ install_laravel() {
    rm -rfv /tmp/laravel # just in case there is some files left
 
    su-exec alpine:alpine composer create-project --prefer-dist laravel/laravel /tmp/laravel
-   su-exec alpine:alpine composer require predis/predis
+
+   rm /tmp/laravel/.env # preserving original .env
 
    echo "moving framework files to our working directory"
    for x in /tmp/laravel/* /tmp/laravel/.[!.]* /tmp/laravel/..?*; do
-       if [ -e "$x" ]; then mv -- "$x" /app/; fi
+       if [ -e "$x" ]; then mv -fv -- "$x" /app/; fi
    done
+
+   su-exec alpine:alpine composer require predis/predis
+   su-exec alpine:alpine php artisan key:generate
 
    rm -rfv /tmp/laravel
 }
