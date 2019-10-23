@@ -82,7 +82,6 @@ post-deploy - executes a bunch of commands in a container ( migrate, config:clea
 
 ### TODO: 
 1. add ldht to image
-2. add default .env (?)
-3. add skipping db check to shorten docker-compose.yml (default .env ?)
-4. add /docker/data to .gitignore
-5. leave chown on behalf of a user (?)
+2. add skipping db check to shorten docker-compose.yml (default .env ?)
+3. add /docker/data to .gitignore
+4. leave chown on behalf of a user (?)
