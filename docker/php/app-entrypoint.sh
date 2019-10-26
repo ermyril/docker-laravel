@@ -26,6 +26,7 @@ install_laravel() {
    su-exec alpine:alpine composer create-project --prefer-dist laravel/laravel /tmp/laravel
 
    rm /tmp/laravel/.env # preserving original .env
+   echo "docker/data" >> /tmp/laravel/.gitignore
 
    echo "moving framework files to our working directory"
    for x in /tmp/laravel/* /tmp/laravel/.[!.]* /tmp/laravel/..?*; do
