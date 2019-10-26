@@ -39,18 +39,18 @@ install_laravel() {
 }
 
 wait_for_db() {
-  local db_host="${DB_HOST:-mariadb}"
+  local db_host="${DB_HOST:-db}"
   local db_port="${DB_PORT:-3306}"
   local db_address=$(getent hosts "$db_host" | awk '{ print $1 }')
   counter=0
-  echo "Connecting to mariadb at $db_address"
+  echo "Connecting to database at $db_address"
   while ! curl --silent "$db_address:$db_port" >/dev/null; do
     counter=$((counter+1))
     if [ $counter == 30 ]; then
-      echo "Error: Couldn't connect to mariadb."
+      echo "Error: Couldn't connect to database."
       exit 1
     fi
-    echo "Trying to connect to mariadb at $db_address. Attempt $counter."
+    echo "Trying to connect to database at $db_address:$db_port. Attempt $counter."
     sleep 5
   done
 }
