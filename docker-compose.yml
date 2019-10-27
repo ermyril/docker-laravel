@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - .:/app:cached
    #  - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
    #  - ./docker/app-entrypoint.sh:/app-entrypoint.sh
     environment:
@@ -24,7 +24,7 @@ services:
       ports:
         - "80:80"
       volumes:
-        - .:/app
+        - .:/app:cached
     #   - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
       restart: "on-failure:5"
   db:
