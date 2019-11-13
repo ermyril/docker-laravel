@@ -4,8 +4,8 @@ services:
    #image: "shiasyn/docker-laravel:latest"
     build: ./docker/php
     restart: "on-failure:5"
-    ports:
-      - "8000:8000"
+   #ports:
+   #  - "8000:8000"
     volumes:
       - .:/app:cached
    #  - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
@@ -18,15 +18,16 @@ services:
    #env_file: .env
     depends_on:
       - db
-      - nginx
   nginx:
-      build: ./docker/nginx
-      ports:
-        - "80:80"
-      volumes:
-        - .:/app:cached
-    #   - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
-      restart: "on-failure:5"
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app:cached
+  #   - ./docker/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
+    restart: "on-failure:5"
+    depends_on:
+      - app
   db:
     image: "mariadb:10.1.38"
     restart: "on-failure:5"
@@ -37,8 +38,8 @@ services:
       - MYSQL_PASSWORD=password
     volumes:
       - ./docker/data/:/var/lib/mysql
-    ports:
-      - "3306:3306"
+   #ports:
+   #  - "3306:3306"
   redis:
     image: "redis:alpine"
     restart: "on-failure:5"
