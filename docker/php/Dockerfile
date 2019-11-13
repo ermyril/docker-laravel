@@ -28,7 +28,7 @@ RUN set -ex && \
         --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-configure zip \
         --with-zlib-dir=/usr/ \
-    && docker-php-ext-install gd zip pdo pdo_mysql mbstring mysqli
+    && docker-php-ext-install gd zip pdo pdo_mysql mbstring mysqli opcache
    # && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
    #
 
