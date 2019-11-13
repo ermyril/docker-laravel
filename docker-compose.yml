@@ -21,7 +21,7 @@ services:
   nginx:
     build: ./docker/nginx
     ports:
-      - "8000:80"
+      - "80:80"
     volumes:
       - .:/app:cached
   #   - ./docker/nginx/log/error.log:/var/log/nginx/error.log
