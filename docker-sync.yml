@@ -1,0 +1,11 @@
+version: '2'
+
+options:
+  verbose: true
+syncs:
+  app-osx-sync: 
+    src: './'
+    sync_userid: '1000'
+    sync_groupid: '1000'
+  nginx-osx-sync: 
+    src: './'

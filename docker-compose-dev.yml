@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  app:
+    volumes:
+      - app-osx-sync:/app:nocopy # nocopy is important
+  nginx:
+    volumes:
+      - nginx-osx-sync:/app:nocopy #  nocopy is important
+
+volumes:
+  app-osx-sync:
+    external: true
+  nginx-osx-sync:
+    external: true
