@@ -28,10 +28,13 @@ RUN set -ex && \
         --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-configure zip \
         --with-zlib-dir=/usr/ \
-    && docker-php-ext-install gd zip pdo pdo_mysql mbstring mysqli
+    && docker-php-ext-install gd zip pdo pdo_mysql mbstring mysqli opcache
    # && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
    #
 
+RUN apk add ssmtp --no-cache;
+COPY ./ssmtp.conf /etc/ssmtp/ssmtp.conf
+RUN echo 'sendmail_path = "/usr/sbin/ssmtp -t -i"' > /usr/local/etc/php/conf.d/mail.ini
 
 #RUN apk add --no-cache tini # tiny init for containers
 # RUN apk add --no-cache busybox-suid # fixing su in busybox - well, we don't really need it, right?
@@ -94,6 +97,8 @@ WORKDIR /app
 
 #COPY . /app
 #RUN composer install
+
+CMD (crontab -l 2>/dev/null; echo "*/10 * * * * /usr/local/bin/php -f /app/public/bitrix/modules/main/tools/cron_events.php") | crontab -
 
 
 ENTRYPOINT [ "/app-entrypoint.sh" ]

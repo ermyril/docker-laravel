@@ -1,0 +1,19 @@
+version: '3.5'
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+    app:
+      volumes:
+        - app-sync:/app:nocopy
+    nginx:
+      volumes:
+        - nginx-sync:/app/public:nocopy
+    
+
+volumes:
+  app-sync:
+    external: true
+  nginx-sync:
+    external: true

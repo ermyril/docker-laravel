@@ -1,0 +1,19 @@
+version: "2"
+
+options:
+ #compose-file-path: './docker-compose/docker-compose.yml'
+ #compose-dev-file-path: './docker-compose/docker-compose-dev.yml'
+  verbose: true # make the whole sync verbose
+syncs:
+  app-sync: #tip: add -sync and you keep consistent names as a convention
+    src: './'
+   #sync_host_ip: 'auto'
+   #sync_host_port: 10872
+    sync_userid: '1000'
+    watch_args: '-v' # make watching verbose
+  nginx-sync: #tip: add -sync and you keep consistent names as a convention
+    src: './public'
+   #sync_host_ip: 'auto'
+   #sync_host_port: 10872
+    sync_userid: '1000'
+    watch_args: '-v' # make watching verbose
