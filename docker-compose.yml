@@ -1,11 +1,8 @@
 version: '3.5'
 services:
   app:
-   #image: "shiasyn/docker-laravel:latest"
     build: ./docker/php
     restart: "on-failure:5"
-   #ports:
-   #  - "8000:8000"
     volumes:
       - .:/app:cached
    #  - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
@@ -37,10 +34,10 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
     volumes:
-      - ./docker/data/:/var/lib/mysql
-   #ports:
-   #  - "3306:3306"
+      - db:/var/lib/mysql
   redis:
     image: "redis:alpine"
     restart: "on-failure:5"
 
+volumes:
+  db:
