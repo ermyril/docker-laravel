@@ -22,6 +22,9 @@ RUN set -ex && \
     zip \
     unzip \
     git  \
+    $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
     && docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
@@ -99,7 +102,7 @@ WORKDIR /app
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 #CMD [ "php", "artisan", "serve", "--host=0.0.0.0", "--port=8000" ]
 CMD ["php-fpm"]
-EXPOSE 8000 9000
+EXPOSE 8000 9000 9001
 
 
 
