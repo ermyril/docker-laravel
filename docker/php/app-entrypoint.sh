@@ -18,6 +18,16 @@ vendor_present() {
   [ -f /app/vendor ]
 }
 
+# fix for setting up host.docker.internal in /etc/hosts on linux
+fix_host_network_name() {
+    if !(ping -c 1 host.docker.internal > /dev/null 2>&1); then
+        echo "linux host detected, fixing hosts file to add host.docker.internal \n"
+        echo -e "`/sbin/ip route|awk '/default/ { print $3 }'`\thost.docker.internal" | tee -a /etc/hosts > /dev/null
+
+        echo "host.docker.internal ip setted up to `/sbin/ip route|awk '/default/ { print $3 }'`"
+    fi
+}
+
 
 install_laravel() {
 
@@ -105,6 +115,7 @@ create_user() {
 
 if [ "${1}" == "php-fpm" -a "$2" == "" ]; then
 
+  fix_host_network_name
   create_user
  #create_pipe_for_stderr
 
